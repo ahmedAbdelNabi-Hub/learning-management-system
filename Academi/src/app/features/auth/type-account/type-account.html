@@ -1,0 +1,57 @@
+<div class=" px-4 mt-8 bg-white flex items-center justify-center ">
+
+    <div class="max-w-4xl w-full">
+        <img src="logo.png" class="w-52 mx-auto mb-4">
+        <h1 class="font-semibold text-gray-800 text-center text-2xl mb-2">اختر نوع الحساب</h1>
+        <p class="text-center text-base text-gray-600 mb-10 leading-relaxed">
+            اختر نوع الحساب الذي يناسب احتياجاتك التعليمية لتبدأ تجربتك معنا بسهولة.
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
+            <div [ngClass]="{'border-blue-500': selectedType() == 'student','border-gray-200': selectedType() != 'student'}"
+                class="bg-white border border-gray-200  rounded-lg p-6 flex flex-col items-center text-center cursor-pointer hover:shadow-md transition"
+                (click)="selectType('student')">
+                <svg class="w-12 h-12 text-blue-500 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 13.18l-8-4.36V19h16v-7.18l-8 4.36z" />
+                </svg>
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">طالب</h2>
+                <p class="text-gray-600 text-sm">اكتشف الدورات التعليمية وتعلم من أفضل المدرسين.</p>
+            </div>
+
+            <div [ngClass]="{'border-green-500': selectedType() === 'instructor','border-gray-200': selectedType() !== 'instructor'}"
+                class="bg-white border border-gray-200  rounded-lg p-6 flex flex-col items-center text-center cursor-pointer hover:shadow-md transition"
+                (click)="selectType('instructor')">
+                <svg class="w-12 h-12 text-green-500 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2c-3.3 0-9.9 1.7-9.9 5v2h19.8v-2c0-3.3-6.6-5-9.9-5z" />
+                </svg>
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">مدرس</h2>
+                <p class="text-gray-600 text-sm">شارك خبراتك وقدّم دوراتك الخاصة بسهولة.</p>
+            </div>
+
+            <div [ngClass]="{'border-blue-500': selectedType() == 'tutor','border-gray-200': selectedType() != 'tutor'}"
+                class="bg-white border col-span-2 md:col-span-1 border-gray-200 rounded-lg p-6 flex flex-col items-center text-center cursor-pointer hover:shadow-md transition"
+                (click)="selectType('tutor')">
+           <svg class="w-12 h-12 text-purple-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+</svg>
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">معلم مع طلاب</h2>
+                <p class="text-gray-600 text-sm">إدارة مجموعات الطلاب وتقديم دروس خاصة أو جماعية.</p>
+            </div>
+        </div>
+
+        <div class="text-center justify-between gap-1 flex mt-8">
+            <button
+                class="bg-blue-600 text-white py-3  px-10 rounded-sm text-lg font-medium hover:bg-blue-700 transition disabled:opacity-50"
+                [disabled]="!selectedType()" (click)="continue()">
+                متابعة
+            </button>
+            <button (click)="goBack()"
+                class=" w-12 h-12 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 ">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "XpertFusionContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "MinimumProductVersion": "2.6.0",
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Entities\\Employee",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "Domain",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 2,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[CostCenters_Link]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Dim1_Locations_Link]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Dim4_Link]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Dim5_Link]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HrEmpStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HrEmpTable]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HrOrgDepartments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProjectTable]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": true,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": true,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false
+}

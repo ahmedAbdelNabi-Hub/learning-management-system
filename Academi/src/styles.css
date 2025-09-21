@@ -1,0 +1,73 @@
+@import "tailwindcss";
+@plugin "tailwindcss-primeui";
+
+body {
+    font-family: 'Cairo', sans-serif;
+}
+
+
+router-outlet {
+    display: block;
+}
+
+app-type-account,
+app-student-dashboard,
+app-instructor-dashboard,
+app-tutor-dashboard {
+    display: block;
+    animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+.route-fade {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.route-fade-fast {
+    animation: fadeInFast 0.2s ease-in;
+}
+
+@keyframes fadeInFast {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.route-fade-scale {
+    animation: fadeInScale 0.25s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,64 @@
+<svg class="absolute  top-0  z-[-50]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path fill="#f9f7f7" fill-opacity="1"
+        d="M0,288L0,128L240,128L240,96L480,96L480,160L720,160L720,32L960,32L960,160L1200,160L1200,64L1440,64L1440,0L1200,0L1200,0L960,0L960,0L720,0L720,0L480,0L480,0L240,0L240,0L0,0L0,0Z">
+    </path>
+</svg>
+<svg class="absolute h-[300px]  top-0  z-[-50]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path fill="#f9f7f7" fill-opacity="1"
+        d="M0,64L0,160L55.4,160L55.4,256L110.8,256L110.8,96L166.2,96L166.2,32L221.5,32L221.5,32L276.9,32L276.9,0L332.3,0L332.3,288L387.7,288L387.7,128L443.1,128L443.1,32L498.5,32L498.5,32L553.8,32L553.8,224L609.2,224L609.2,96L664.6,96L664.6,192L720,192L720,32L775.4,32L775.4,128L830.8,128L830.8,192L886.2,192L886.2,64L941.5,64L941.5,288L996.9,288L996.9,192L1052.3,192L1052.3,0L1107.7,0L1107.7,224L1163.1,224L1163.1,128L1218.5,128L1218.5,32L1273.8,32L1273.8,128L1329.2,128L1329.2,224L1384.6,224L1384.6,256L1440,256L1440,0L1384.6,0L1384.6,0L1329.2,0L1329.2,0L1273.8,0L1273.8,0L1218.5,0L1218.5,0L1163.1,0L1163.1,0L1107.7,0L1107.7,0L1052.3,0L1052.3,0L996.9,0L996.9,0L941.5,0L941.5,0L886.2,0L886.2,0L830.8,0L830.8,0L775.4,0L775.4,0L720,0L720,0L664.6,0L664.6,0L609.2,0L609.2,0L553.8,0L553.8,0L498.5,0L498.5,0L443.1,0L443.1,0L387.7,0L387.7,0L332.3,0L332.3,0L276.9,0L276.9,0L221.5,0L221.5,0L166.2,0L166.2,0L110.8,0L110.8,0L55.4,0L55.4,0L0,0L0,0Z">
+    </path>
+</svg>
+<div class="max-w-md mx-auto mt-8 p-8">
+    <img src="logo.png" class="w-52 mx-auto mb-2">
+    <p class="font-semibold text-gray-800 text-center text-3xl mb-8">تسجيل الدخول للوصول إلى محتواك التعليمي</p>
+    <form (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+        <!-- Email Float Label -->
+        <div class="relative">
+            <input type="text" id="email"
+                class="peer w-full pt-6 pb-2 px-3 text-base border border-[#9194ac] rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent   invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                [(ngModel)]="email" name="email" placeholder="Email Address">
+            <label for="email"
+                class="absolute  right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none  peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4  peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                البريد الإلكترونى
+            </label>
+        </div>
+        <div class="relative">
+            <input [type]="showPassword() ? 'text' : 'password'" id="password"
+                class="peer w-full pt-6 pb-2 px-3 text-base border border-gray-400 rounded-md bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500"
+                [(ngModel)]="password" name="password" placeholder="Password">
+            <label for="password"
+                class="absolute  right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none  peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4  peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                كلمة المرور
+            </label>
+            <!-- Show / Hide password -->
+            <button type="button" (click)="OnShowPassword()"
+                class="absolute left-3 top-4 text-sm text-blue-600 focus:outline-none">
+                {{ showPassword() ? 'إخفاء' : 'إظهار' }}
+            </button>
+        </div>
+        <div class="flex items-center justify-end text-sm">
+
+            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">نسيت كلمة المرور؟</a>
+        </div>
+        <button type="submit"
+            class="w-full py-3 mt-1 cursor-pointer px-6 bg-blue-600 text-white font-semibold rounded-sm transition-all duration-200 hover:bg-blue-600 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 ">
+            سجل الان
+        </button>
+    </form>
+    <div class="text-center mt-4">
+        <p class="text-gray-600">
+            ألا تملك حسابًا ؟
+            <a routerLink="/create-account" class="text-blue-600 hover:text-blue-800 font-semibold">اشترك الآن</a>
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-3 pt-6 border-t border-gray-200 text-center">
+        <p class="text-xs text-gray-500">
+            بتسجيل الدخول، أنت توافق على
+            <a href="#" class="text-blue-600 hover:underline">شروط الخدمة</a>
+            و
+            <a href="#" class="text-blue-600 hover:underline">سياسة الخصوصية</a>
+        </p>
+    </div>
+</div>
