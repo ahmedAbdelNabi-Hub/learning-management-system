@@ -1,4 +1,3 @@
-// registration-steps.component.ts
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -10,7 +9,6 @@ import { FormErrorComponent } from "../../../shared/components/form-error/form-e
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
   animations: [
-
     trigger('fadeInOut', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(20px)' }),
@@ -29,21 +27,18 @@ import { FormErrorComponent } from "../../../shared/components/form-error/form-e
 })
 export class RegistrationStepsComponent implements OnInit {
   currentStep = 1;
-  totalSteps = 4;
+  totalSteps = 3;
   isSubmitting = false;
   personalForm!: FormGroup;
-  contactForm!: FormGroup;
-  securityForm!: FormGroup;
-  addressForm!: FormGroup;
+  passwordForm!: FormGroup;
+  documentForm!: FormGroup;
 
   steps = [
     { id: 1, title: 'البيانات الشخصية', icon: 'user', completed: false },
-    { id: 2, title: 'كلمة المرور الخاصة بك ', icon: 'mail', completed: false },
-    { id: 3, title: 'رفع الملفات', icon: 'lock', completed: false },
-    { id: 4, title: 'Address', icon: 'map-pin', completed: false }
+    { id: 2, title: 'كلمة المرور الخاصة بك ', icon: 'lock', completed: false },
+    { id: 3, title: 'رفع الملفات', icon: 'upload', completed: false },
   ];
   cuurentStepName = signal<string>(this.steps[0].title)
-
 
   constructor(private fb: FormBuilder) { }
 
@@ -56,64 +51,52 @@ export class RegistrationStepsComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       phone: ['', Validators.required],
-      email: ['', Validators.required],
-    });
-
-    this.contactForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^\+?[\d\s\-\(\)]+$/)]],
-      alternateEmail: ['', Validators.email]
     });
 
-    this.securityForm = this.fb.group({
+    this.passwordForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required],
-      securityQuestion: ['', Validators.required],
-      securityAnswer: ['', Validators.required]
-    }, { validators: this.passwordMatchValidator });
+    });
 
-    this.addressForm = this.fb.group({
-      street: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      zipCode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$/)]],
-      country: ['', Validators.required]
+    this.documentForm = this.fb.group({
+      cvFile: [null],
+      imageFile: [null],
+      videoLink: ['']
     });
   }
 
-  passwordMatchValidator(control: AbstractControl) {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
 
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      return { passwordMismatch: true };
+
+  onFileChange(event: any, controlName: string) {
+    const file = event.target.files[0];
+    if (file) {
+      this.documentForm.patchValue({ [controlName]: file });
     }
-    return null;
   }
 
   getCurrentForm(): FormGroup {
     switch (this.currentStep) {
       case 1: return this.personalForm;
-      case 2: return this.contactForm;
-      case 3: return this.securityForm;
-      case 4: return this.addressForm;
+      case 2: return this.passwordForm;
+      case 3: return this.documentForm;
       default: return this.personalForm;
     }
   }
 
   nextStep() {
     const currentForm = this.getCurrentForm();
-
+    if (currentForm.valid) {
       this.steps[this.currentStep - 1].completed = true;
       this.currentStep = Math.min(this.currentStep + 1, this.totalSteps);
       this.cuurentStepName.set(this.steps[this.currentStep - 1].title);
-    
+    } else {
+      this.markFormGroupTouched(currentForm);
+    }
   }
 
   prevStep() {
     this.currentStep = Math.max(this.currentStep - 1, 1);
     this.cuurentStepName.set(this.steps[this.currentStep - 1].title);
-
   }
 
   goToStep(step: number) {
@@ -124,16 +107,8 @@ export class RegistrationStepsComponent implements OnInit {
 
   markFormGroupTouched(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
-      control?.markAsTouched();
+      formGroup.get(key)?.markAsTouched();
     });
-  }
-
-  getStepState(stepIndex: number): string {
-    const step = this.steps[stepIndex];
-    if (step.completed) return 'completed';
-    if (step.id === this.currentStep) return 'active';
-    return 'inactive';
   }
 
   isFieldInvalid(form: FormGroup, fieldName: string): boolean {
@@ -144,34 +119,49 @@ export class RegistrationStepsComponent implements OnInit {
   getFieldError(form: FormGroup, fieldName: string): string {
     const field = form.get(fieldName);
     if (field?.errors) {
-      if (field.errors['required']) return `${fieldName} is required`;
-      if (field.errors['email']) return 'Please enter a valid email';
-      if (field.errors['minlength']) return `Minimum ${field.errors['minlength'].requiredLength} characters required`;
-      if (field.errors['pattern']) return 'Please enter a valid format';
-      if (field.errors['passwordMismatch']) return 'Passwords do not match';
+      if (field.errors['required']) return `${fieldName} مطلوب`;
+      if (field.errors['email']) return 'الرجاء إدخال بريد إلكتروني صحيح';
+      if (field.errors['minlength']) return `الحد الأدنى ${field.errors['minlength'].requiredLength} أحرف`;
+      if (field.errors['passwordMismatch']) return 'كلمات المرور غير متطابقة';
     }
     return '';
   }
 
-  async onSubmit() {
-    if (this.addressForm.valid) {
+  onSubmit() {
+    if (this.personalForm.valid && this.passwordForm.valid && this.documentForm.valid) {
       this.isSubmitting = true;
+      const formData = new FormData();
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      Object.keys(this.personalForm.value).forEach(key => {
+        formData.append(`personal.${key}`, this.personalForm.value[key]);
+      });
 
-      const formData = {
-        personal: this.personalForm.value,
-        contact: this.contactForm.value,
-        security: this.securityForm.value,
-        address: this.addressForm.value
-      };
+      Object.keys(this.passwordForm.value).forEach(key => {
+        formData.append(`password.${key}`, this.passwordForm.value[key]);
+      });
 
-      console.log('Registration Data:', formData);
-      alert('Registration completed successfully!');
+      const documentValues = this.documentForm.value;
+      if (documentValues.cvFile) {
+        formData.append("cvFile", documentValues.cvFile);
+      }
+      if (documentValues.imageFile) {
+        formData.append("imageFile", documentValues.imageFile);
+      }
+      if (documentValues.videoLink) {
+        formData.append("videoLink", documentValues.videoLink);
+      }
+
+      console.log("Final FormData:");
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      alert('تم التسجيل بنجاح!');
       this.isSubmitting = false;
     } else {
-      this.markFormGroupTouched(this.addressForm);
+      this.markFormGroupTouched(this.personalForm);
+      this.markFormGroupTouched(this.passwordForm);
+      this.markFormGroupTouched(this.documentForm);
     }
   }
 
