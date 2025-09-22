@@ -1,23 +1,16 @@
 // registration-steps.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import { FormErrorComponent } from "../../../shared/components/form-error/form-error.component";
 
 @Component({
   selector: 'app-registration-steps',
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
   animations: [
-    trigger('slideInOut', [
-      transition(':enter', [
-        style({ transform: 'translateX(100%)', opacity: 0 }),
-        animate('300ms ease-in', style({ transform: 'translateX(0%)', opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate('300ms ease-out', style({ transform: 'translateX(-100%)', opacity: 0 }))
-      ])
-    ]),
+
     trigger('fadeInOut', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(20px)' }),
@@ -32,24 +25,25 @@ import { CommonModule } from '@angular/common';
     ])
   ],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, FormErrorComponent]
 })
 export class RegistrationStepsComponent implements OnInit {
   currentStep = 1;
   totalSteps = 4;
   isSubmitting = false;
-
   personalForm!: FormGroup;
   contactForm!: FormGroup;
   securityForm!: FormGroup;
   addressForm!: FormGroup;
 
   steps = [
-    { id: 1, title: 'Personal Info', icon: 'user', completed: false },
-    { id: 2, title: 'Contact', icon: 'mail', completed: false },
-    { id: 3, title: 'Security', icon: 'lock', completed: false },
+    { id: 1, title: 'البيانات الشخصية', icon: 'user', completed: false },
+    { id: 2, title: 'كلمة المرور الخاصة بك ', icon: 'mail', completed: false },
+    { id: 3, title: 'رفع الملفات', icon: 'lock', completed: false },
     { id: 4, title: 'Address', icon: 'map-pin', completed: false }
   ];
+  cuurentStepName = signal<string>(this.steps[0].title)
+
 
   constructor(private fb: FormBuilder) { }
 
@@ -61,8 +55,8 @@ export class RegistrationStepsComponent implements OnInit {
     this.personalForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
-      dateOfBirth: ['', Validators.required],
-      gender: ['', Validators.required]
+      phone: ['', Validators.required],
+      email: ['', Validators.required],
     });
 
     this.contactForm = this.fb.group({
@@ -110,16 +104,16 @@ export class RegistrationStepsComponent implements OnInit {
   nextStep() {
     const currentForm = this.getCurrentForm();
 
-    if (currentForm.valid) {
       this.steps[this.currentStep - 1].completed = true;
       this.currentStep = Math.min(this.currentStep + 1, this.totalSteps);
-    } else {
-      this.markFormGroupTouched(currentForm);
-    }
+      this.cuurentStepName.set(this.steps[this.currentStep - 1].title);
+    
   }
 
   prevStep() {
     this.currentStep = Math.max(this.currentStep - 1, 1);
+    this.cuurentStepName.set(this.steps[this.currentStep - 1].title);
+
   }
 
   goToStep(step: number) {

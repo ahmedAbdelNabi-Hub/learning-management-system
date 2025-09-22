@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
+@import "boxicons";
 
 body {
     font-family: 'Cairo', sans-serif;
@@ -27,6 +28,7 @@ app-tutor-dashboard {
         opacity: 1;
     }
 }
+
 .route-fade {
     animation: fadeInUp 0.3s ease-out;
 }
@@ -42,6 +44,7 @@ app-tutor-dashboard {
         transform: translateY(0);
     }
 }
+
 .route-fade-fast {
     animation: fadeInFast 0.2s ease-in;
 }

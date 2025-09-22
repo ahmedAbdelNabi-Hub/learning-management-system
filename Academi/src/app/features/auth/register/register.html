@@ -1,222 +1,205 @@
-<!-- registration-steps.component.html -->
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-8" @fadeInOut>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h1>
-            <p class="text-gray-600">Join us today and get started in minutes</p>
-        </div>
+<svg class="absolute  top-0  z-[-50]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path fill="#f9f7f7" fill-opacity="1"
+        d="M0,288L0,128L240,128L240,96L480,96L480,160L720,160L720,32L960,32L960,160L1200,160L1200,64L1440,64L1440,0L1200,0L1200,0L960,0L960,0L720,0L720,0L480,0L480,0L240,0L240,0L0,0L0,0Z">
+    </path>
+</svg>
+<svg class="absolute h-[300px]  top-0  z-[-50]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path fill="#f9f7f7" fill-opacity="1"
+        d="M0,64L0,160L55.4,160L55.4,256L110.8,256L110.8,96L166.2,96L166.2,32L221.5,32L221.5,32L276.9,32L276.9,0L332.3,0L332.3,288L387.7,288L387.7,128L443.1,128L443.1,32L498.5,32L498.5,32L553.8,32L553.8,224L609.2,224L609.2,96L664.6,96L664.6,192L720,192L720,32L775.4,32L775.4,128L830.8,128L830.8,192L886.2,192L886.2,64L941.5,64L941.5,288L996.9,288L996.9,192L1052.3,192L1052.3,0L1107.7,0L1107.7,224L1163.1,224L1163.1,128L1218.5,128L1218.5,32L1273.8,32L1273.8,128L1329.2,128L1329.2,224L1384.6,224L1384.6,256L1440,256L1440,0L1384.6,0L1384.6,0L1329.2,0L1329.2,0L1273.8,0L1273.8,0L1218.5,0L1218.5,0L1163.1,0L1163.1,0L1107.7,0L1107.7,0L1052.3,0L1052.3,0L996.9,0L996.9,0L941.5,0L941.5,0L886.2,0L886.2,0L830.8,0L830.8,0L775.4,0L775.4,0L720,0L720,0L664.6,0L664.6,0L609.2,0L609.2,0L553.8,0L553.8,0L498.5,0L498.5,0L443.1,0L443.1,0L387.7,0L387.7,0L332.3,0L332.3,0L276.9,0L276.9,0L221.5,0L221.5,0L166.2,0L166.2,0L110.8,0L110.8,0L55.4,0L55.4,0L0,0L0,0Z">
+    </path>
+</svg>
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-xl mx-auto">
+        <img src="logo.png" class="w-52 mx-auto mb-2">
+        <p class="font-semibold text-gray-800 text-center text-3xl mb-1">
+            إنشاء حساب جديد للوصول إلى محتواك التعليمي
+        </p>
+        <div class="mb-2 mt-2 flex flex-col  justify-center gap-1">
+            <div class="mb-2 flex items-center justify-between ">
+                <button *ngIf="currentStep > 1" (click)="prevStep()"
+                    class="flex items-center px-6 py-2 text-gray-600 bg-gray-100 rounded-sm text-sm hover:bg-gray-200 transition-colors duration-200 font-medium">
+                    <i class='bx bxs-right-arrow '></i>
+                    السابق
+                </button>
 
-        <!-- Progress Bar -->
-        <div class="mb-8">
-            <div class="flex items-center justify-between mb-4">
-                <div *ngFor="let step of steps; let i = index"
-                    class="flex items-center cursor-pointer transition-all duration-200" (click)="goToStep(step.id)"
-                    [class.opacity-50]="step.id > currentStep && !step.completed">
-
-                    <!-- Step Circle -->
-                    <div [@stepProgress]="getStepState(i)"
-                        class="w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold border-2 border-transparent transition-all duration-200"
-                        [ngClass]="{
-              'bg-blue-500 border-blue-500': step.id === currentStep,
-              'bg-green-500 border-green-500': step.completed,
-              'bg-gray-300 border-gray-300': step.id > currentStep && !step.completed
-            }">
-                        <i *ngIf="!step.completed" class="fas fa-{{step.icon}}"></i>
-                        <i *ngIf="step.completed" class="fas fa-check"></i>
-                    </div>
-
-                    <!-- Step Title -->
-                    <div class="ml-3 text-sm font-medium" [ngClass]="{
-                 'text-blue-600': step.id === currentStep,
-                 'text-green-600': step.completed,
-                 'text-gray-500': step.id > currentStep && !step.completed
-               }">
-                        {{step.title}}
-                    </div>
-
-                    <!-- Connector Line -->
-                    <div *ngIf="i < steps.length - 1" class="flex-1 h-1 mx-4 rounded transition-colors duration-200"
-                        [ngClass]="{
-                 'bg-green-500': step.completed,
-                 'bg-gray-300': !step.completed
-               }">
-                    </div>
+                <div class="flex justify-between items-center mt-2 text-xs text-gray-500">
+                    <span>Step {{currentStep}} of {{steps.length}}</span>
+                    <span class="text-sm mx-2 font-bold"> / {{getProgressPercentage()}}</span>
                 </div>
             </div>
-
-            <!-- Progress Bar -->
-            <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
-                <div class="bg-blue-500 h-2 rounded-full transition-all duration-300 ease-out"
+            <div class="w-full bg-gray-200 rounded-sm h-1 overflow-hidden">
+                <div class="bg-gray-600 h-full rounded-full transition-all duration-500 ease-out relative"
                     [style.width.%]="getProgressPercentage()">
+
                 </div>
             </div>
         </div>
-
         <!-- Form Container -->
-        <div class="bg-white rounded-2xl shadow-xl p-8 transition-all duration-300" @slideInOut>
-
-            <!-- Step 1: Personal Information -->
+        <div class="bg-white px-2 py-2 md:p-2 transition-all duration-300">
+            <!-- Title -->
+            <div class="mb-3 mt-2">
+                <h2 class="text-sm font-bold text-gray-800 mb-1">{{cuurentStepName()}}</h2>
+                <p class="text-gray-600 text-sm">يرجى ملء البيانات المطلوبة بدقة</p>
+            </div>
             <div *ngIf="currentStep === 1" @fadeInOut>
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Personal Information</h2>
-                <form [formGroup]="personalForm" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                            <input type="text" formControlName="firstName"
-                                class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [class.border-red-500]="isFieldInvalid(personalForm, 'firstName')"
-                                [class.border-gray-300]="!isFieldInvalid(personalForm, 'firstName')"
-                                placeholder="Enter your first name">
-                            <p *ngIf="isFieldInvalid(personalForm, 'firstName')" class="mt-1 text-sm text-red-500">
-                                {{getFieldError(personalForm, 'firstName')}}
-                            </p>
+
+
+                <form [formGroup]="personalForm" class="space-y-6" dir="rtl">
+                    <div class="grid grid-cols-1 gap-2">
+
+                        <div class="relative">
+                            <input
+                                [ngClass]="isFieldInvalid(personalForm,'firstName') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm  bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                formControlName="firstName" placeholder="الاسم الأول">
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                الاسم الأول
+                            </label>
+                            <app-form-error [form]="personalForm" controlName="firstName"></app-form-error>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                            <input type="text" formControlName="lastName"
-                                class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [class.border-red-500]="isFieldInvalid(personalForm, 'lastName')"
-                                [class.border-gray-300]="!isFieldInvalid(personalForm, 'lastName')"
-                                placeholder="Enter your last name">
-                            <p *ngIf="isFieldInvalid(personalForm, 'lastName')" class="mt-1 text-sm text-red-500">
-                                {{getFieldError(personalForm, 'lastName')}}
-                            </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2  gap-2">
+                            <div class="relative">
+                                <input
+                                    [ngClass]="isFieldInvalid(personalForm,'lastName') ? 'border-red-500' : 'border-[#9194ac]'"
+                                    class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                    formControlName="lastName" placeholder="اسم العائلة">
+                                <label
+                                    class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                    اسم العائلة
+                                </label>
+                                <app-form-error [form]="personalForm" controlName="lastName"></app-form-error>
+                            </div>
+
+                            <div class="relative">
+                                <input
+                                    [ngClass]="isFieldInvalid(personalForm,'phone') ? 'border-red-500' : 'border-[#9194ac]'"
+                                    class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                    formControlName="phone" placeholder="رقم الهاتف" type="tel">
+                                <label
+                                    class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                    رقم الهاتف
+                                </label>
+                                <app-form-error [form]="personalForm" controlName="phone"></app-form-error>
+                            </div>
                         </div>
+
+                        <div class="relative">
+                            <input
+                                [ngClass]="isFieldInvalid(personalForm,'email') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border border-[#9194ac] rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                formControlName="email" placeholder="البريد الإلكتروني" type="email">
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                البريد الإلكتروني
+                            </label>
+                            <app-form-error [form]="personalForm" controlName="email"></app-form-error>
+                        </div>
+
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
-                            <input type="date" formControlName="dateOfBirth"
-                                class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [class.border-red-500]="isFieldInvalid(personalForm, 'dateOfBirth')"
-                                [class.border-gray-300]="!isFieldInvalid(personalForm, 'dateOfBirth')">
-                            <p *ngIf="isFieldInvalid(personalForm, 'dateOfBirth')" class="mt-1 text-sm text-red-500">
-                                {{getFieldError(personalForm, 'dateOfBirth')}}
-                            </p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
-                            <select formControlName="gender"
-                                class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [class.border-red-500]="isFieldInvalid(personalForm, 'gender')"
-                                [class.border-gray-300]="!isFieldInvalid(personalForm, 'gender')">
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                            <p *ngIf="isFieldInvalid(personalForm, 'gender')" class="mt-1 text-sm text-red-500">
-                                {{getFieldError(personalForm, 'gender')}}
-                            </p>
-                        </div>
-                    </div>
                 </form>
             </div>
 
             <!-- Step 2: Contact Information -->
             <div *ngIf="currentStep === 2" @fadeInOut>
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Contact Information</h2>
                 <form [formGroup]="contactForm" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input type="email" formControlName="email"
-                            class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [class.border-red-500]="isFieldInvalid(contactForm, 'email')"
-                            [class.border-gray-300]="!isFieldInvalid(contactForm, 'email')"
-                            placeholder="Enter your email address">
-                        <p *ngIf="isFieldInvalid(contactForm, 'email')" class="mt-1 text-sm text-red-500">
-                            {{getFieldError(contactForm, 'email')}}
-                        </p>
+                    <div class="relative">
+                        <input
+                            [ngClass]="isFieldInvalid(securityForm,'password') ? 'border-red-500' : 'border-[#9194ac]'"
+                            class="peer w-full pt-6 pb-2 px-3 text-base border border-[#9194ac] rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                            type="password" formControlName="password" placeholder="Password">
+                        <label
+                            class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                            الرقم السري
+                        </label>
+                        <app-form-error [form]="securityForm" controlName="password"></app-form-error>
                     </div>
+                    <p class="font-semibold text-gray-900 text-sm">يجب أن تحتوي كلمة المرور الخاصة بك على الأقل:</p>
+                    <ul class="list-disc list-inside text-gray-800 text-sm">
+                        <li>حرف واحد <span class="">غير مستوفى</span></li>
+                        <li>رقم واحد أو رمز خاص (مثل: # ? ! &) <span class="">غير مستوفى</span></li>
+                        <li>10 أحرف <span class="">غير مستوفى</span></li>
+                    </ul>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                        <input type="tel" formControlName="phone"
-                            class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [class.border-red-500]="isFieldInvalid(contactForm, 'phone')"
-                            [class.border-gray-300]="!isFieldInvalid(contactForm, 'phone')"
-                            placeholder="Enter your phone number">
-                        <p *ngIf="isFieldInvalid(contactForm, 'phone')" class="mt-1 text-sm text-red-500">
-                            {{getFieldError(contactForm, 'phone')}}
-                        </p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Alternate Email (Optional)</label>
-                        <input type="email" formControlName="alternateEmail"
-                            class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [class.border-red-500]="isFieldInvalid(contactForm, 'alternateEmail')"
-                            [class.border-gray-300]="!isFieldInvalid(contactForm, 'alternateEmail')"
-                            placeholder="Enter alternate email address">
-                        <p *ngIf="isFieldInvalid(contactForm, 'alternateEmail')" class="mt-1 text-sm text-red-500">
-                            {{getFieldError(contactForm, 'alternateEmail')}}
-                        </p>
-                    </div>
                 </form>
             </div>
 
             <!-- Step 3: Security -->
             <div *ngIf="currentStep === 3" @fadeInOut>
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Security Settings</h2>
-                <form [formGroup]="securityForm" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input type="password" formControlName="password"
-                            class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [class.border-red-500]="isFieldInvalid(securityForm, 'password')"
-                            [class.border-gray-300]="!isFieldInvalid(securityForm, 'password')"
-                            placeholder="Enter your password">
-                        <p *ngIf="isFieldInvalid(securityForm, 'password')" class="mt-1 text-sm text-red-500">
-                            {{getFieldError(securityForm, 'password')}}
-                        </p>
+                <form [formGroup]="securityForm" class="space-y-2">
+                 <div class="grid grid-cols-2 gap-2">
+                         <!-- CV Upload (Optional) -->
+                    <div class="space-y-2">
+                        <label for="cv-upload"
+                            class="inline-block text-sm font-medium text-gray-800 mt-2.5 dark:text-neutral-200">
+                            Upload CV (Optional)
+                        </label>
+
+                        <label for="cv-upload"
+                            class="group p-4  block cursor-pointer text-center border-2 border-dashed border-gray-200 rounded-lg focus-within:outline-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 dark:border-neutral-700">
+                            <input id="cv-upload" formControlName="cvFile" type="file" accept=".pdf,.doc,.docx"
+                                class="sr-only">
+                            <svg class="size-10 mx-auto text-gray-400 dark:text-neutral-600"
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                            </svg>
+                            <span class="mt-2 block text-sm text-gray-800 dark:text-neutral-200">
+                                Browse your device or <span class="group-hover:text-blue-700 text-blue-600">drag 'n
+                                    drop'</span>
+                            </span>
+                            <span class="mt-1 block text-xs text-gray-500 dark:text-neutral-500">
+                                PDF, DOC, DOCX - Maximum file size is 10 MB
+                            </span>
+                        </label>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-                        <input type="password" formControlName="confirmPassword"
-                            class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [class.border-red-500]="isFieldInvalid(securityForm, 'confirmPassword') || securityForm.hasError('passwordMismatch')"
-                            [class.border-gray-300]="!isFieldInvalid(securityForm, 'confirmPassword') && !securityForm.hasError('passwordMismatch')"
-                            placeholder="Confirm your password">
-                        <p *ngIf="isFieldInvalid(securityForm, 'confirmPassword') || securityForm.hasError('passwordMismatch')"
-                            class="mt-1 text-sm text-red-500">
-                            {{securityForm.hasError('passwordMismatch') ? 'Passwords do not match' :
-                            getFieldError(securityForm, 'confirmPassword')}}
-                        </p>
+
+                    <!-- Image Upload (Optional) -->
+                    <div class="space-y-2">
+                        <label for="image-upload"
+                            class="inline-block text-sm font-medium text-gray-800 mt-2.5 dark:text-neutral-200">
+                            Upload Image (Optional)
+                        </label>
+
+                        <label for="image-upload"
+                            class="group p-4  block cursor-pointer text-center border-2 border-dashed border-gray-200 rounded-lg focus-within:outline-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 dark:border-neutral-700">
+                            <input id="image-upload" formControlName="imageFile" type="file" accept="image/*"
+                                class="sr-only">
+                            <svg class="size-10 mx-auto text-gray-400 dark:text-neutral-600"
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                <path
+                                    d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                            </svg>
+                            <span class="mt-2 block text-sm text-gray-800 dark:text-neutral-200">
+                                Browse your device or <span class="group-hover:text-blue-700 text-blue-600">drag 'n
+                                    drop'</span>
+                            </span>
+                            <span class="mt-1 block text-xs text-gray-500 dark:text-neutral-500">
+                                JPG, PNG, GIF - Maximum file size is 5 MB
+                            </span>
+                        </label>
+                    </div>
+                 </div>
+                    <!-- Video Link Input (Required) -->
+                    <div class="relative mt-4">
+                        <input
+                            [ngClass]="isFieldInvalid(securityForm,'videoLink') ? 'border-red-500' : 'border-[#9194ac]'"
+                            class="peer w-full pt-6 pb-2 px-3 text-base border border-[#9194ac] rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                            type="url" formControlName="videoLink" placeholder="Video Link">
+                        <label
+                            class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                            Video Link (Optional)
+                        </label>
+                        <app-form-error [form]="securityForm" controlName="videoLink"></app-form-error>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Security Question</label>
-                        <select formControlName="securityQuestion"
-                            class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [class.border-red-500]="isFieldInvalid(securityForm, 'securityQuestion')"
-                            [class.border-gray-300]="!isFieldInvalid(securityForm, 'securityQuestion')">
-                            <option value="">Select a security question</option>
-                            <option value="pet">What was the name of your first pet?</option>
-                            <option value="school">What was the name of your elementary school?</option>
-                            <option value="city">In what city were you born?</option>
-                            <option value="mother">What is your mother's maiden name?</option>
-                        </select>
-                        <p *ngIf="isFieldInvalid(securityForm, 'securityQuestion')" class="mt-1 text-sm text-red-500">
-                            {{getFieldError(securityForm, 'securityQuestion')}}
-                        </p>
-                    </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Security Answer</label>
-                        <input type="text" formControlName="securityAnswer"
-                            class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [class.border-red-500]="isFieldInvalid(securityForm, 'securityAnswer')"
-                            [class.border-gray-300]="!isFieldInvalid(securityForm, 'securityAnswer')"
-                            placeholder="Enter your answer">
-                        <p *ngIf="isFieldInvalid(securityForm, 'securityAnswer')" class="mt-1 text-sm text-red-500">
-                            {{getFieldError(securityForm, 'securityAnswer')}}
-                        </p>
-                    </div>
                 </form>
             </div>
 
@@ -224,73 +207,73 @@
             <div *ngIf="currentStep === 4" @fadeInOut>
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6">Address Information</h2>
                 <form [formGroup]="addressForm" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
-                        <input type="text" formControlName="street"
-                            class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [class.border-red-500]="isFieldInvalid(addressForm, 'street')"
-                            [class.border-gray-300]="!isFieldInvalid(addressForm, 'street')"
-                            placeholder="Enter your street address">
-                        <p *ngIf="isFieldInvalid(addressForm, 'street')" class="mt-1 text-sm text-red-500">
-                            {{getFieldError(addressForm, 'street')}}
-                        </p>
+                    <div class="relative">
+                        <input [ngClass]="isFieldInvalid(addressForm,'street') ? 'border-red-500' : 'border-[#9194ac]'"
+                            class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                            type="text" formControlName="street" placeholder="Street Address">
+                        <label
+                            class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                            Street Address
+                        </label>
+                        <app-form-error [form]="addressForm" controlName="street"></app-form-error>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
-                            <input type="text" formControlName="city"
-                                class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [class.border-red-500]="isFieldInvalid(addressForm, 'city')"
-                                [class.border-gray-300]="!isFieldInvalid(addressForm, 'city')"
-                                placeholder="Enter your city">
-                            <p *ngIf="isFieldInvalid(addressForm, 'city')" class="mt-1 text-sm text-red-500">
-                                {{getFieldError(addressForm, 'city')}}
-                            </p>
+                        <div class="relative">
+                            <input
+                                [ngClass]="isFieldInvalid(addressForm,'city') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                                type="text" formControlName="city" placeholder="City">
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                City
+                            </label>
+                            <app-form-error [form]="addressForm" controlName="city"></app-form-error>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">State</label>
-                            <input type="text" formControlName="state"
-                                class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [class.border-red-500]="isFieldInvalid(addressForm, 'state')"
-                                [class.border-gray-300]="!isFieldInvalid(addressForm, 'state')"
-                                placeholder="Enter your state">
-                            <p *ngIf="isFieldInvalid(addressForm, 'state')" class="mt-1 text-sm text-red-500">
-                                {{getFieldError(addressForm, 'state')}}
-                            </p>
+                        <div class="relative">
+                            <input
+                                [ngClass]="isFieldInvalid(addressForm,'state') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                                type="text" formControlName="state" placeholder="State">
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                State
+                            </label>
+                            <app-form-error [form]="addressForm" controlName="state"></app-form-error>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code</label>
-                            <input type="text" formControlName="zipCode"
-                                class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [class.border-red-500]="isFieldInvalid(addressForm, 'zipCode')"
-                                [class.border-gray-300]="!isFieldInvalid(addressForm, 'zipCode')"
-                                placeholder="Enter ZIP code">
-                            <p *ngIf="isFieldInvalid(addressForm, 'zipCode')" class="mt-1 text-sm text-red-500">
-                                {{getFieldError(addressForm, 'zipCode')}}
-                            </p>
+                        <div class="relative">
+                            <input
+                                [ngClass]="isFieldInvalid(addressForm,'zipCode') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                                type="text" formControlName="zipCode" placeholder="ZIP Code">
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                ZIP Code
+                            </label>
+                            <app-form-error [form]="addressForm" controlName="zipCode"></app-form-error>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                            <select formControlName="country"
-                                class="w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [class.border-red-500]="isFieldInvalid(addressForm, 'country')"
-                                [class.border-gray-300]="!isFieldInvalid(addressForm, 'country')">
-                                <option value="">Select Country</option>
+                        <div class="relative">
+                            <select
+                                [ngClass]="isFieldInvalid(addressForm,'country') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                                formControlName="country">
+                                <option value=""></option>
                                 <option value="us">United States</option>
                                 <option value="ca">Canada</option>
                                 <option value="uk">United Kingdom</option>
                                 <option value="au">Australia</option>
                                 <option value="other">Other</option>
                             </select>
-                            <p *ngIf="isFieldInvalid(addressForm, 'country')" class="mt-1 text-sm text-red-500">
-                                {{getFieldError(addressForm, 'country')}}
-                            </p>
+                            <label
+                                class="absolute right-3 top-1 text-xs transition-all duration-200 pointer-events-none text-blue-500 peer-invalid:text-red-500">
+                                Country
+                            </label>
+                            <app-form-error [form]="addressForm" controlName="country"></app-form-error>
                         </div>
                     </div>
                 </form>
@@ -298,16 +281,12 @@
 
             <!-- Navigation Buttons -->
             <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
-                <button *ngIf="currentStep > 1" (click)="prevStep()"
-                    class="flex items-center px-6 py-3 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200 font-medium">
-                    <i class="fas fa-chevron-left mr-2"></i>
-                    Previous
-                </button>
+
                 <div *ngIf="currentStep === 1"></div>
 
                 <button *ngIf="currentStep < totalSteps" (click)="nextStep()"
-                    class="flex items-center px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 font-medium ml-auto">
-                    Next
+                    class="flex items-center px-8 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 font-medium ml-auto">
+                    التالي
                     <i class="fas fa-chevron-right ml-2"></i>
                 </button>
 
