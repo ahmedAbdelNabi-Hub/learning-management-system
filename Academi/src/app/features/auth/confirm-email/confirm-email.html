@@ -1,0 +1,61 @@
+<div class="py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md mx-auto flex items-center justify-center flex-col">
+        <img src="logo.png" class="w-52 mx-auto mb-2">
+        <!-- Title -->
+        <h1 class="text-3xl  font-bold text-gray-800 mb-6">
+            تحقق من صندوق الوارد
+        </h1>
+
+        <div class="mb-8 text-gray-800 relative">
+            <p class="text-base leading-relaxed mb-2">
+                أدخل الرمز المكون من 6 أرقام الذي أرسلناه إلى
+            </p>
+
+            <div class="flex items-center gap-2">
+                <p class="font-semibold text-gray-800" id="userEmail">
+                    abdalnabyahmed724@gmail.com
+                </p>
+                <p class="text-sm mt-1 ">
+                    لإنهاء اشتراكك
+                </p>
+            </div>
+        </div>
+
+        <div class="relative w-full">
+                <svg class="w-16 h-auto absolute -top-56 -left-0 z-[-50] text-orange-500" width="121" height="135" viewBox="0 0 121 135" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 16.4754C11.7688 27.4499 21.2452 57.3224 5 89.0164" stroke="currentColor"
+                        stroke-width="10" stroke-linecap="round" />
+                    <path d="M33.6761 112.104C44.6984 98.1239 74.2618 57.6776 83.4821 5" stroke="currentColor"
+                        stroke-width="10" stroke-linecap="round" />
+                    <path d="M50.5525 130C68.2064 127.495 110.731 117.541 116 78.0874" stroke="currentColor"
+                        stroke-width="10" stroke-linecap="round" />
+                </svg>
+            <input type="text" id="email"
+                class="peer w-full pt-6 pb-2 px-3 text-base border border-[#9194ac] z-10 rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent   invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                name="email" placeholder="Email Address">
+            <label for="email"
+                class="absolute  right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none  peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4  peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-500 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                رمز مكون من 6 أرقام
+            </label>
+        </div> <button type="submit" id="submitBtn"
+            class="w-full py-3 mt-4 bg-purple-700 text-white font-semibold text-lg rounded-sm hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span id="submitText">اشترك الآن</span>
+            <!-- <div id="submitSpinner"
+                class=" inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2">
+            </div> -->
+        </button>
+
+        <div class="mt-6">
+            <button type="button" id="resendBtn"
+                class="text-purple-700  cursor-pointer hover:text-black font-medium text-sm transition-colors duration-200 disabled:text-gray-400 disabled:cursor-not-allowed">
+                إعادة إرسال الرمز
+            </button>
+        </div>
+
+        <div id="timerDisplay" class="mt-4 text-sm text-gray-500">
+            يمكنك إعادة الإرسال خلال: <span id="timer" class="font-semibold text-purple-600">02:00</span>
+        </div>
+
+    </div>
+</div>
