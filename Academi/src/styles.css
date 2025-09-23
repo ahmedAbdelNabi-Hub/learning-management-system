@@ -11,13 +11,18 @@ router-outlet {
     display: block;
 }
 
-app-type-account,
+app-account-type,
+app-register,
+app-forget-password,
+app-confirm-email,
+app-login,
 app-student-dashboard,
 app-instructor-dashboard,
 app-tutor-dashboard {
     display: block;
     animation: fadeIn 0.2s ease-in;
 }
+
 
 @keyframes fadeIn {
     from {
