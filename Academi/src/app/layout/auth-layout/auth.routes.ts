@@ -10,10 +10,18 @@ export const AUTH_ROUTES: Routes = [
             then(m => m.ConfirmEmail)
     },
     {
+        path: 'change-password',
+        loadComponent: () => import('../../features/auth/change-password/change-password').
+            then(m => m.ChangePassword), pathMatch: "full"
+
+    },
+    {
         path: 'forget-password',
         loadComponent: () => import('../../features/auth/forget-password/forget-password').
-            then(m => m.ForgetPassword)
+            then(m => m.ForgetPassword),
+        pathMatch: "full"
     },
+
     { path: 'create-account', loadComponent: () => import('../../features/auth/account-type/account-type').then(m => m.AccountType) },
     { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
