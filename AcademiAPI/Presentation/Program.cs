@@ -18,11 +18,14 @@ namespace Presentation
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddPresentationServices(builder.Configuration);
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddMemoryCache(); // Register IMemoryCache
+            builder.Services.AddMemoryCache(); 
             builder.Services.AddSwaggerGen();
-
+          
             var app = builder.Build();
-
+            using (var scope = app.Services.CreateScope())
+            {
+                await GovernorateCitySeeder.SeedGovernoratesAndCitiesAsync(scope.ServiceProvider);
+            }
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

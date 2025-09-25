@@ -9,11 +9,9 @@ namespace Domain.Entities
 {
     public class Division : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public int GradeId { get; set; }
-        public Grade Grade { get; set; }
+        public Stage Stage { get; set; }
     }
 }

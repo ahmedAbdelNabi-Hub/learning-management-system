@@ -4,6 +4,7 @@ using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250925055830_updateTableCity")]
+    partial class updateTableCity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,17 +43,37 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StageId")
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GradeId");
+
+                    b.ToTable("Divisions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Grade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StageId");
-
-                    b.ToTable("Divisions");
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("Domain.Entities.Identity.AppUser", b =>
@@ -231,29 +254,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Governorates");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Stage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Stages");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -389,13 +389,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Division", b =>
                 {
-                    b.HasOne("Domain.Entities.Stage", "Stage")
+                    b.HasOne("Domain.Entities.Grade", "Grade")
                         .WithMany("Divisions")
-                        .HasForeignKey("StageId")
+                        .HasForeignKey("GradeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Stage");
+                    b.Navigation("Grade");
                 });
 
             modelBuilder.Entity("Domain.Entities.Identity.AppUser", b =>
@@ -412,7 +412,7 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("GovernorateId");
 
-                    b.HasOne("Domain.Entities.Stage", "Grade")
+                    b.HasOne("Domain.Entities.Grade", "Grade")
                         .WithMany()
                         .HasForeignKey("GradeId");
 
@@ -487,14 +487,14 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Grade", b =>
+                {
+                    b.Navigation("Divisions");
+                });
+
             modelBuilder.Entity("Domain.Entities.Identity.Governorate", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Stage", b =>
-                {
-                    b.Navigation("Divisions");
                 });
 #pragma warning restore 612, 618
         }

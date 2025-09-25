@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.Identity
 {
-    public class Document : BaseEntity
-    {
-        public string Type { get; set; }
-        public string Url { get; set; }
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
-        public int? ApplicationId { get; set; }
-        public Application Application { get; set; }
-
-    }
+    //public class Document : BaseEntity
+    //{
+    //    public string Type { get; set; }
+    //    public string Url { get; set; }
+    //    public string UserId { get; set; }
+    //    public AppUser User { get; set; }
+    //}
 }

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Identity
+namespace Domain.Entities
 {
-    public class District : BaseEntity
+    public class Stage : BaseEntity
     {
-        public string Name { get; set; } 
-        public int GovernorateId { get; set; }
-        public Governorate Governorate { get; set; }
-    }
 
+        public string Name { get; set; } 
+
+        public ICollection<Division>? Divisions { get; set; } = new List<Division>();
+    }
 }

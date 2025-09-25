@@ -17,8 +17,8 @@ namespace Infrastructure.Contexts
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Governorate> Governorates { get; set; }
-        public DbSet<District> Districts { get; set; }
-        public DbSet<Grade> Grades { get; set; }
+        public DbSet<City> Districts { get; set; }
+        public DbSet<Stage> Stages { get; set; }
         public DbSet<Division> Divisions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -22,10 +22,10 @@ namespace Domain.Entities.Identity
         public string? NationalIdImageUrl { get; set; }
 
         public int? DistrictId { get; set; }
-        public District District { get; set; }
+        public City District { get; set; }
 
         public int? GradeId { get; set; }
-        public Grade Grade { get; set; }
+        public Stage Grade { get; set; }
 
         public int? DivisionId { get; set; }
         public Division? Division { get; set; }

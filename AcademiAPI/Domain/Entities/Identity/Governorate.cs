@@ -9,8 +9,9 @@ namespace Domain.Entities.Identity
 {
     public class Governorate : BaseEntity
     {
-        public string Name { get; set; } 
+        public string GovernorateNameAr { get; set; }
+        public string GovernorateNameEn { get; set; }
 
-        public ICollection<District> Districts { get; set; }
+        public ICollection<City> Cities { get; set; }
     }
 }

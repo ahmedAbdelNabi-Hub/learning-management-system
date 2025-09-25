@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enums
+namespace Application.UseCases.Locations.Handlers
 {
-    public enum AccountType
+    internal class GetAllCitiesHandler
     {
-        StudentOffline,
-        StudentOnline,
-        Admin,
-        superAdmin
     }
 }
