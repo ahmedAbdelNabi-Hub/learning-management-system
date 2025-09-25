@@ -1,0 +1,47 @@
+<div class=" bg-[#fffefe] ">
+    <div class="bg-[#fffefe] border custom-scroll border-gray-100 overflow-y-auto  translate-x-full right-3-3 top-[40px]   transition-all duration-300 transform
+         w-[240px] h-full hidden md:fixed 
+           lg:block lg:translate-x-0 lg:end-auto lg:bottom-0">
+
+        <div class=" bg-[#fffefe]   transition-all duration-300 
+        ease-in-out flex flex-col max-w-[600px] ">
+            <nav class="flex-1 p-4 gap-2 border border-gray-100 overflow-y-auto overflow-x-hidden">
+                <div *ngFor="let item of menuItems" class="relative">
+                    <div class="flex items-center justify-between px-3
+                     py-2.5 rounded-sm cursor-pointer transition-all
+                      duration-200 border border-transparent" [class.bg-gray-100]="isMenuExpanded(item.id)"
+                        [class.text-black]="isMenuExpanded(item.id)"
+                        [class.hover:bg-gray-100]="!isMenuExpanded(item.id)"
+                        [class.hover:border-gray-300]="!isMenuExpanded(item.id)" (click)="onMenuItemClick(item)">
+                        <div class="flex items-center relative gap-3">
+                            <div class="flex items-center justify-center bg-[#d1cfcf36] rounded-sm p-0.5">
+                                <i
+                                    [class]="item.icon + ' text-xl font-semibold ' + (isMenuExpanded(item.id) ? 'text-black' : 'text-slate-800')"></i>
+                            </div>
+                            <span
+                                [class]="isCollapsed() ? 'hidden' : 'text-sm font-semibold ' + (isMenuExpanded(item.id) ? 'text-black' : 'text-gray-600')">
+                                {{ item.label }}
+                            </span>
+                        </div>
+                        <!-- Arrow -->
+                        <i *ngIf="item.children && !isCollapsed()"
+                            [class]="'bx bx-chevron-left text-lg transition-transform duration-200 ' + (isMenuExpanded(item.id) ? 'text-blue-600 rotate-90' : 'text-gray-800')"
+                            [class.rotate-90]="isMenuExpanded(item.id)">
+                        </i>
+                    </div>
+
+                    <!-- Submenu -->
+                    <div *ngIf="item.children && isMenuExpanded(item.id) && !isCollapsed()"
+                        class="mt-2 mr-6 gap-3 border-r-2 border-gray-300 pr-2">
+                        <div *ngFor="let child of item.children"
+                            class="flex items-center gap-3 space-x-reverse p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200"
+                            (click)="onChildMenuClick(child)">
+                            <i [class]="child.icon + ' text-xl text-gray-700'"></i>
+                            <span class="text-sm text-gray-700 hover:text-gray-900">{{ child.label }}</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>

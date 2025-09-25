@@ -1,0 +1,99 @@
+<!-- Header -->
+<header dir="rtl"
+  class="fixed z-[150] top-0 text-[#42526E] bg-white border-b border-[#DFE1E6] flex flex-wrap sm:justify-start sm:flex-nowrap w-full text-sm py-1.5">
+  <nav class="w-full px-2 sm:px-4 sm:flex sm:items-center">
+
+    <!-- القسم الأيسر - زر القائمة + اللوجو -->
+    <div class="flex gap-2 sm:gap-3 items-center w-full sm:w-[15%] xl:w-[20%] justify-between sm:justify-start">
+      <!-- زر القائمة -->
+      <div
+        class="py-1 px-1 border text-[#42526E] rounded-md hover:bg-[#F4F5F7] flex items-center justify-center border-[#DFE1E6] transition-colors cursor-pointer">
+        <i class='bx bx-menu text-xl'></i>
+      </div>
+
+      <!-- الشعار -->
+      <div class="flex items-center justify-center">
+        <img src="logo.png" alt="Logo" class="w-32 sm:w-32">
+      </div>
+
+      <!-- أيقونات للموبايل فقط -->
+      <div class="flex sm:hidden items-center gap-2">
+        <div
+          class="py-1.5 px-1.5 border text-[#42526E] rounded-md hover:bg-[#F4F5F7] flex items-center justify-center border-[#DFE1E6] cursor-pointer">
+          <i class='bx bx-bell text-lg'></i>
+        </div>
+        <div
+          class="py-1.5 px-1.5 border text-[#42526E] rounded-md hover:bg-[#F4F5F7] flex items-center justify-center border-[#DFE1E6] cursor-pointer">
+          <i class='bx bx-moon text-lg'></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- القسم الأوسط - البحث (يظهر فقط على الشاشات الكبيرة) -->
+    <div class="hidden sm:block relative w-full sm:w-[45%] xl:w-[50%] mx-0 sm:mx-4">
+      <div class="absolute inset-y-0 right-0 flex items-center pointer-events-none z-20 pr-3.5">
+        <i class="bx bx-search text-[#42526E] text-lg"></i>
+      </div>
+      <input
+        class="py-2 px-4 border bg-[#F4F5F7] text-[#42526E] pr-10 pl-4 block w-full border-[#DFE1E6] rounded-md sm:text-sm focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] outline-none"
+        type="text" placeholder="ابحث عن المهام...">
+    </div>
+
+    <!-- القسم الأيمن - الأزرار -->
+    <div class="hidden sm:flex mx-2 items-center max-w-[50%] w-full sm:w-[35%] xl:w-[30%] justify-end gap-2 lg:gap-3">
+      <!-- زر إضافة مهمة -->
+   
+
+      <!-- زر الترقيه (بريميوم) -->
+      <button
+        class="hidden md:flex items-center text-[#0052CC] border border-[#0052CC] justify-center space-x-1 space-x-reverse py-2 px-2 lg:px-6 rounded-sm bg-white hover:bg-[#F4F5F7] transition-colors">
+        <i class='bx bx-crown text-sm lg:text-[16px]'></i>
+        <p class="font-semibold text-xs lg:text-[14px] whitespace-nowrap">ترقية بريميوم</p>
+      </button>
+
+      <!-- إشعارات -->
+      <div
+        class="py-1.5 px-1.5 border text-[#42526E] rounded-md hover:bg-[#F4F5F7] flex items-center justify-center border-[#DFE1E6] cursor-pointer">
+        <i class='bx bx-bell text-xl'></i>
+      </div>
+
+      <!-- الوضع الليلي -->
+      <div
+        class="py-1.5 px-1.5 border text-[#42526E] rounded-md hover:bg-[#F4F5F7] flex items-center justify-center border-[#DFE1E6] cursor-pointer">
+        <i class='bx bx-moon text-xl'></i>
+      </div>
+
+      <!-- الملف الشخصي -->
+      <div
+        class="py-2 px-2 border text-[#ffffff] bg-black rounded-full hover:bg-[#F4F5F7] flex items-center justify-center border-[#DFE1E6] cursor-pointer">
+        <i class='bx bx-user text-xl'></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- البحث في الموبايل -->
+  <div class="w-full px-2 mt-2 sm:hidden">
+    <div class="relative">
+      <div class="absolute inset-y-0 right-0 flex items-center pointer-events-none z-20 pr-3.5">
+        <i class="bx bx-search text-[#42526E] text-lg"></i>
+      </div>
+      <input
+        class="py-2 px-4 border bg-[#F4F5F7] text-[#42526E] pr-10 pl-4 block w-full border-[#DFE1E6] rounded-md text-sm focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] outline-none"
+        type="text" placeholder="ابحث...">
+    </div>
+  </div>
+
+  <!-- أزرار الموبايل -->
+  <div class="w-full px-2 mt-2 sm:hidden flex gap-2">
+    <button
+      class="flex-1 flex items-center text-white justify-center space-x-1 space-x-reverse py-2 px-4 rounded-sm bg-[#0052CC] hover:bg-[#0747A6] transition-colors">
+      <i class='bx bx-plus-circle text-lg'></i>
+      <p class="font-semibold text-sm">إضافة</p>
+    </button>
+    <button
+      class="flex items-center text-[#0052CC] border border-[#0052CC] justify-center space-x-1 space-x-reverse py-2 px-3 rounded-sm bg-white hover:bg-[#F4F5F7] transition-colors">
+      <i class='bx bx-crown text-[16px]'></i>
+      <p class="font-semibold text-sm">بريميوم</p>
+    </button>
+  </div>
+</header>

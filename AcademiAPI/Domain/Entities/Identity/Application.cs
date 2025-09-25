@@ -19,6 +19,12 @@ namespace Domain.Entities.Identity
         public AppUser User { get; set; }
         public string ReviewedById { get; set; }
         public AppUser ReviewedBy { get; set; }
+
+        public int GovernorateId { get; set; }
+        public Governorate Governorate { get; set; }
+
+        public int DistrictId { get; set; }
+        public District District { get; set; }
         public ICollection<Document> Documents { get; set; }
     }
 

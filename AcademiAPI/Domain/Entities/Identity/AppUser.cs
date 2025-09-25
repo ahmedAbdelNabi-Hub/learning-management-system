@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,22 @@ namespace Domain.Entities.Identity
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Status { get; set; }
-        public string? ImageUrl { get; set; }
-        public string? Specialization { get; set; }
-        public int? YearsOfExperience { get; set; }
-        public decimal? Rating { get; set; }
-        public string? Bio { get; set; }
-        public string? Address { get; set; }
+        public string ImageUrl { get; set; }
+        public AccountType AccountType { get; set; } 
+        public string? ParentPhone { get; set; }
+        public string? Neighborhood { get; set; }
+        public int? GovernorateId { get; set; }
+        public Governorate Governorate { get; set; }
+        public string? NationalIdImageUrl { get; set; }
+
+        public int? DistrictId { get; set; }
+        public District District { get; set; }
+
+        public int? GradeId { get; set; }
+        public Grade Grade { get; set; }
+
+        public int? DivisionId { get; set; }
+        public Division? Division { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
