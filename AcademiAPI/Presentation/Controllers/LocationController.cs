@@ -1,6 +1,7 @@
 ﻿using Application.UseCases.Locations.Queries;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Presentation.Controllers
 {
@@ -19,6 +20,13 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetGovernorates()
         {
             var result = await _mediator.Send(new GetAllGovernoratesQuery());
+            return Ok(result);
+        }
+
+        [HttpGet("governorates/{Id}/cities")]
+        public async Task<IActionResult> GetCitiesByGovernorate(int Id)
+        {
+            var result = await _mediator.Send(new GetCitiesByGovernorateIdQuery(Id));
             return Ok(result);
         }
     }

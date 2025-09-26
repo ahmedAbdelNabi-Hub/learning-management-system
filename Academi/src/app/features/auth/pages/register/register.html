@@ -1,0 +1,271 @@
+<!-- Keep the same SVGs for background design -->
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-xl mx-auto">
+        <img src="logo.png" class="w-52 mx-auto mb-2">
+        <p class="font-semibold text-gray-800 text-center text-3xl mb-1">
+            إنشاء حساب جديد للوصول إلى محتواك التعليمي
+        </p>
+        <p class="text-[14px] text-center mt-3 text-gray-600">
+            ادخل بياناتك بشكل صحيح وسيتم التواصل معاك خلال ساعات لتفعيل الحساب!
+        </p>
+
+        <div class="mb-2 mt-4 flex flex-col justify-center gap-1">
+            <div class="mb-2 flex items-center justify-between">
+
+                <div class="flex justify-between gap-2 items-center  ">
+                    <button *ngIf="currentStep > 1" (click)="prevStep()"
+                        class="flex items-center px-6 py-1 text-gray-600 bg-gray-100 text-sm hover:bg-gray-200 transition-colors duration-200 font-medium">
+                        <i class='bx bxs-right-arrow'></i>
+                        السابق
+                    </button>
+                   
+
+                    <button *ngIf="currentStep < totalSteps" (click)="nextStep()"
+                        class="flex items-center px-8 text-sm rounded- py-1 bg-blue-500 text-white  hover:bg-blue-600 transition-colors duration-200 font-medium ml-auto">
+                        التالي
+                    </button>
+
+                    <button *ngIf="currentStep === totalSteps" (click)="onSubmit()" [disabled]="isSubmitting"
+                        class="flex text-sm items-center px-8 py-1 bg-green-500 text-white  hover:bg-green-600 transition-colors duration-200 font-medium ml-auto disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span>تأكيد التسجيل</span>
+                        <span *ngIf="isSubmitting" class="flex items-center">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Processing...
+                        </span>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center mt-2 text-xs text-gray-500">
+                    <span>Step {{currentStep}} of {{steps.length}}</span>
+                </div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-sm h-1 overflow-hidden">
+                <div class="bg-gray-600 h-full rounded-full transition-all duration-500 ease-out relative"
+                    [style.width.%]="getProgressPercentage()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="bg-white px-2 py-2 md:p-2 transition-all duration-300">
+            <!-- Title -->
+            <div class="mb-3 mt-2">
+                <h2 class="text-xl font-bold text-gray-800 mb-1">{{currentStepName()}}</h2>
+                <p class="text-gray-600 text-sm">يرجى ملء البيانات المطلوبة بدقة</p>
+            </div>
+
+            <!-- Step 1: Personal Information -->
+            <div *ngIf="currentStep === 1" @fadeInOut>
+                <form [formGroup]="personalForm" class="space-y-6" dir="rtl">
+                    <div class="grid grid-cols-1 gap-2">
+                        <div class="relative">
+                            <input
+                                [ngClass]="isFieldInvalid(personalForm,'firstName') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                formControlName="firstName" placeholder="الاسم الأول">
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                الاسم الأول
+                            </label>
+                            <app-form-error [form]="personalForm" controlName="firstName"></app-form-error>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div class="relative">
+                                <input
+                                    [ngClass]="isFieldInvalid(personalForm,'lastName') ? 'border-red-500' : 'border-[#9194ac]'"
+                                    class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                    formControlName="lastName" placeholder="اسم العائلة">
+                                <label
+                                    class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                    اسم العائلة
+                                </label>
+                                <app-form-error [form]="personalForm" controlName="lastName"></app-form-error>
+                            </div>
+
+                            <div class="relative">
+                                <input
+                                    [ngClass]="isFieldInvalid(personalForm,'phone') ? 'border-red-500' : 'border-[#9194ac]'"
+                                    class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                    formControlName="phone" placeholder="رقم الهاتف" type="tel">
+                                <label
+                                    class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                    رقم الهاتف
+                                </label>
+                                <app-form-error [form]="personalForm" controlName="phone"></app-form-error>
+                            </div>
+                        </div>
+
+
+                        <div class="relative">
+                            <input
+                                [ngClass]="isFieldInvalid(personalForm,'parentPhone') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border border-[#9194ac] rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                formControlName="parentPhone" placeholder="رقم هاتف ولي الأمر" type="tel">
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                رقم هاتف ولي الأمر (اجباري)
+                            </label>
+                            <app-form-error [form]="personalForm" controlName="parentPhone"></app-form-error>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Password -->
+            <div *ngIf="currentStep === 2" @fadeInOut>
+                <form [formGroup]="securityForm" class="space-y-2">
+                    <div class="relative">
+                        <input [ngClass]="isFieldInvalid(securityForm,'email') ? 'border-red-500' : 'border-[#9194ac]'"
+                            class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                            formControlName="email" placeholder="البريد الإلكتروني" type="email">
+                        <label
+                            class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 ">
+                            البريد الإلكتروني
+                        </label>
+                        <app-form-error [form]="securityForm" controlName="email"></app-form-error>
+                    </div>
+                    <div class="relative">
+                        <input
+                            [ngClass]="isFieldInvalid(securityForm,'password') ? 'border-red-500' : 'border-[#9194ac]'"
+                            class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100"
+                            type="password" formControlName="password" placeholder="Password">
+                        <label
+                            class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 ">
+                            الرقم السري
+                        </label>
+                        <app-form-error [form]="securityForm" controlName="password"></app-form-error>
+                    </div>
+                    <p class="font-semibold text-gray-900 text-sm">يجب أن تحتوي كلمة المرور الخاصة بك على الأقل:</p>
+                    <ul class="list-disc list-inside text-gray-800 text-sm">
+                        <li>حرف واحد <span class="">غير مستوفى</span></li>
+                        <li>رقم واحد أو رمز خاص (مثل: # ? ! &) <span class="">غير مستوفى</span></li>
+                        <li>10 أحرف <span class="">غير مستوفى</span></li>
+                    </ul>
+                </form>
+            </div>
+
+            <!-- Step 3: Address and Academic Information -->
+            <div *ngIf="currentStep === 3" @fadeInOut>
+                <form [formGroup]="addressForm" class="space-y-6" dir="rtl">
+                    <div class="grid grid-cols-1 gap-2">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div class="relative">
+                                <select #governorateSelect
+                                    [ngClass]="isFieldInvalid(addressForm,'governorateId') ? 'border-red-500' : 'border-[#9194ac]'"
+                                    class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 text-right"
+                                    formControlName="governorateId">
+                                    <option value="" disabled selected>اختر المحافظة</option>
+                                    <option *ngFor="let governorate of governorates()" [value]="governorate.id">
+                                        {{ governorate.nameAr }}
+                                    </option>
+                                </select>
+                                <label
+                                    class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                    المحافظة
+                                </label>
+                                <app-form-error [form]="addressForm" controlName="governorateId"></app-form-error>
+                            </div>
+
+                            <div class="relative">
+                                <select
+                                    [ngClass]="isFieldInvalid(addressForm,'districtId') ? 'border-red-500' : 'border-[#9194ac]'"
+                                    class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 text-right"
+                                    formControlName="districtId" [disabled]="!addressForm.get('governorateId')?.value">
+                                    <option value="" disabled selected>--اختر المدينة</option>
+                                    <option *ngFor="let district of cities()" [value]="district.id">
+                                        {{ district.nameAr }}
+                                    </option>
+                                </select>
+                                <label
+                                    class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                    المدينة
+                                </label>
+                                <app-form-error [form]="addressForm" controlName="districtId"></app-form-error>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <input
+                                [ngClass]="isFieldInvalid(addressForm,'neighborhood') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 placeholder-transparent invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-100 text-right"
+                                formControlName="neighborhood" placeholder="الحي">
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                الحي (اختياري)
+                            </label>
+                            <app-form-error [form]="addressForm" controlName="neighborhood"></app-form-error>
+                        </div>
+
+                        <div class="relative">
+                            <select
+                                [ngClass]="isFieldInvalid(addressForm,'gradeId') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 text-right"
+                                formControlName="gradeId">
+                                <option value="" disabled selected>اختر المرحلة</option>
+                                <option *ngFor="let grade of grades()" [value]="grade.id">
+                                    {{ grade.name }}
+                                </option>
+                            </select>
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                المرحلة
+                            </label>
+                            <app-form-error [form]="addressForm" controlName="gradeId"></app-form-error>
+                        </div>
+
+                        <div class="relative">
+                            <select
+                                [ngClass]="isFieldInvalid(addressForm,'divisionId') ? 'border-red-500' : 'border-[#9194ac]'"
+                                class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 text-right"
+                                formControlName="divisionId" [disabled]="!addressForm.get('gradeId')?.value">
+                                <option value="" disabled selected>اختر القسم</option>
+                                <option *ngFor="let division of divisions()" [value]="division.id">
+                                    {{ division.name }}
+                                </option>
+                            </select>
+                            <label
+                                class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
+                                القسم (اختياري)
+                            </label>
+                            <app-form-error [form]="addressForm" controlName="divisionId"></app-form-error>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 4: Documents -->
+            <div *ngIf="currentStep === 4" @fadeInOut>
+                <form [formGroup]="documentForm" class="space-y-2">
+                    <div class="grid grid-cols-1 gap-2">
+                        <div class="space-y-2">
+                            <label for="cv-upload"
+                                class="inline-block text-sm font-medium text-gray-800 mt-2.5 dark:text-neutral-200">
+                                رفع البطاقه او شهاده الميلاد
+                            </label>
+                            <label for="cv-upload"
+                                class="group p-3 block cursor-pointer text-center border-2 border-dashed border-gray-200 rounded-lg focus-within:outline-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 dark:border-neutral-700">
+                                <input type="file" accept="image/*" formControlName="cvFile"
+                                    (change)="onFileChange($event, 'cvFile')" id="cv-upload" accept=".pdf,.doc,.docx"
+                                    class="sr-only">
+                                <svg class="size-10 mx-auto text-gray-400 dark:text-neutral-600"
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                                </svg>
+                                <span class="mt-2 block text-sm text-gray-800 dark:text-neutral-200">
+                                    تصفح جهازك أو <span class="group-hover:text-blue-700 text-blue-600">اسحب
+                                        وأفلت</span>
+                                </span>
+                                <span class="mt-1 block text-xs text-gray-500 dark:text-neutral-500">
+                                    PDF, DOC, DOCX - الحد الأقصى لحجم الملف 10 ميجابايت
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Navigation Buttons -->
+
+        </div>
+    </div>
+</div>

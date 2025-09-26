@@ -1,8 +1,8 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:3000/api',
-    authUrl: 'http://localhost:3000/api/auth',
-    assetsUrl: 'http://localhost:3000/assets',
+    apiUrl: 'https://localhost:7069/api',
+    authUrl: 'https://localhost:7069/api/auth',
+    assetsUrl: 'https://localhost:7069/assets',
     debug: true,
     featureFlags: {
         enableMockData: true,
