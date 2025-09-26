@@ -25,6 +25,7 @@ namespace Presentation
             using (var scope = app.Services.CreateScope())
             {
                 await GovernorateCitySeeder.SeedGovernoratesAndCitiesAsync(scope.ServiceProvider);
+                await StageDivisionSeeder.SeedAsync(scope.ServiceProvider);
             }
             if (app.Environment.IsDevelopment())
             {

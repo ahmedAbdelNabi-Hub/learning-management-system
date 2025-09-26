@@ -33,16 +33,16 @@ namespace Infrastructure.SeedData
                 var divisions = new[]
                 {
 
-                    new Division { Name = "عام", GradeId = grade1.Id },
-                    new Division { Name = "أزهر", GradeId = grade1.Id },
+                    new Division { Name = "عام", StageId = grade1.Id },
+                    new Division { Name = "أزهر", StageId = grade1.Id },
 
-                   new Division { Name = "عام", GradeId = grade1.Id },
-                   new Division { Name = "أزهر", GradeId = grade1.Id },
+                   new Division { Name = "عام", StageId = grade2.Id },
+                   new Division { Name = "أزهر", StageId = grade2.Id },
 
-                    new Division { Name = "علمي رياضة", GradeId = grade3.Id },
-                    new Division { Name = "علمي علوم", GradeId = grade3.Id },
-                    new Division { Name = "أدبي", GradeId = grade3.Id },
-                    new Division { Name = "أزهر", GradeId = grade3.Id }
+                    new Division { Name = "علمي رياضة", StageId = grade3.Id },
+                    new Division { Name = "علمي علوم", StageId = grade3.Id },
+                    new Division { Name = "أدبي", StageId = grade3.Id },
+                    new Division { Name = "أزهر", StageId = grade3.Id }
                 };
 
                 context.Divisions.AddRange(divisions);

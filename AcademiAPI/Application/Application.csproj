@@ -22,6 +22,7 @@
     <Folder Include="UseCases\Authentication\Handlers\" />
     <Folder Include="UseCases\Authentication\Queries\" />
     <Folder Include="UseCases\Locations\Commands\" />
+    <Folder Include="UseCases\Stages\Commands\" />
     <Folder Include="UseCases\testTep\Commands\" />
     <Folder Include="UseCases\testTep\Handlers\" />
     <Folder Include="UseCases\testTep\Queries\" />

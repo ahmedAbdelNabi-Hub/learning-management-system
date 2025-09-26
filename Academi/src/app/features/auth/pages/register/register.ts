@@ -1,14 +1,13 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { Subject, takeUntil } from 'rxjs';
 import { FormErrorComponent } from '../../../../shared/components/form-error/form-error.component';
 import { LocationService } from '../../services/location.service';
 import { IGovernorate } from '../../interface/locations/IGovernorate';
 import { ICity } from '../../interface/locations/ICity';
-
-
+import { StageService } from '../../services/stage.service';
 
 @Component({
   selector: 'app-registration-steps',
@@ -31,7 +30,7 @@ import { ICity } from '../../interface/locations/ICity';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, FormErrorComponent]
 })
-export class RegistrationStepsComponent implements OnInit {
+export class RegistrationStepsComponent implements OnInit, OnDestroy {
   currentStep = 1;
   totalSteps = 4;
   isSubmitting = false;
@@ -48,41 +47,35 @@ export class RegistrationStepsComponent implements OnInit {
 
   currentStepName = signal<string>(this.steps[0].title);
 
-
   governorates = signal<IGovernorate[]>([]);
   cities = signal<ICity[]>([]);
   grades = signal<any[]>([]);
   divisions = signal<any[]>([]);
 
+  private destroyed$ = new Subject<void>();
 
-  selectedFiles: { [key: string]: File | null } = {
-    cvFile: null,
-    nationalIdImageFile: null
-  };
 
-  constructor(private fb: FormBuilder, private locationService: LocationService) { }
+
+  constructor(
+    private fb: FormBuilder,
+    private locationService: LocationService,
+    private stageService: StageService
+  ) { }
 
   ngOnInit() {
     this.initializeForms();
-    this.setupFormListeners();
-    this.locationService.getGovernorates().subscribe(data => {
-      this.governorates.set(data);
-    });
-    this.addressForm.get('governorateId')?.valueChanges.subscribe(value => {
-      this.onGovernorateChange(value);
-    });
-  }
-  onGovernorateChange(governorateId: string) {
-    const id = Number(governorateId);
-    if (!isNaN(id)) {
-      this.locationService.getCitiesByGovernorate(id).subscribe(data => {
-        this.cities.set(data);
-      });
-    }
+    this.fetchGovernorates();
+    this.fetchStages();
+    this.setupGovernorateChangeListener();
+    this.setupGradeChangeListener();
   }
 
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 
-  initializeForms() {
+  private initializeForms() {
     this.personalForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
@@ -110,50 +103,89 @@ export class RegistrationStepsComponent implements OnInit {
     });
   }
 
-  setupFormListeners() {
-    this.addressForm.get('governorateId')?.valueChanges.subscribe((governorateId) => {
-      if (governorateId) {
-        this.addressForm.get('districtId')?.enable();
-        this.addressForm.get('districtId')?.setValue('');
-      } else {
-        this.addressForm.get('districtId')?.disable();
-        this.addressForm.get('districtId')?.setValue('');
-      }
-    });
-
-    // Filter divisions based on grade selection
-    this.addressForm.get('gradeId')?.valueChanges.subscribe((gradeId) => {
-      if (gradeId) {
-        this.addressForm.get('divisionId')?.enable();
-        this.addressForm.get('divisionId')?.setValue('');
-      } else {
-        this.addressForm.get('divisionId')?.disable();
-        this.addressForm.get('divisionId')?.setValue('');
-      }
-    });
+  private fetchGovernorates() {
+    this.locationService.getGovernorates()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (data) => this.governorates.set(data),
+        error: (error) => console.error('Error fetching governorates:', error)
+      });
   }
 
+  private fetchStages() {
+    this.stageService.getStages()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (data) => this.grades.set(data),
+        error: (error) => console.error('Error fetching stages:', error)
+      });
+  }
 
+  private setupGovernorateChangeListener() {
+    this.addressForm.get('governorateId')?.valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((governorateId) => {
+        const id = Number(governorateId);
+        if (governorateId && !isNaN(id)) {
+          this.fetchCitiesByGovernorate(id);
+          this.addressForm.get('districtId')?.enable();
+        } else {
+          this.cities.set([]);
+          this.addressForm.get('districtId')?.disable();
+          this.addressForm.get('districtId')?.setValue('');
+        }
+      });
+  }
+
+  private fetchCitiesByGovernorate(id: number) {
+    this.locationService.getCitiesByGovernorate(id)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (data) => this.cities.set(data),
+        error: (error) => console.error('Error fetching cities:', error)
+      });
+  }
+
+  private setupGradeChangeListener() {
+    this.addressForm.get('gradeId')?.valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((gradeId) => {
+        const id = Number(gradeId);
+        if (gradeId && !isNaN(id)) {
+          this.fetchDivisionsByStage(id);
+          this.addressForm.get('divisionId')?.enable();
+        } else {
+          this.divisions.set([]);
+          this.addressForm.get('divisionId')?.disable();
+          this.addressForm.get('divisionId')?.setValue('');
+        }
+      });
+  }
+
+  private fetchDivisionsByStage(id: number) {
+    this.stageService.getDivisionsByStage(id)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (data) => this.divisions.set(data),
+        error: (error) => console.error('Error fetching divisions:', error)
+      });
+  }
 
   onFileChange(event: any, controlName: string) {
     const file = event.target.files[0];
     if (file) {
-      // Optional: Add file size validation
       const maxSize = controlName === 'cvFile' ? 10 * 1024 * 1024 : 5 * 1024 * 1024; // 10MB for CV, 5MB for image
       if (file.size > maxSize) {
         alert(`حجم الملف كبير جدًا. الحد الأقصى ${maxSize / (1024 * 1024)} ميجابايت.`);
         return;
       }
-      this.selectedFiles[controlName] = file;
       this.documentForm.patchValue({ [controlName]: file });
     } else {
-      this.selectedFiles[controlName] = null;
       this.documentForm.patchValue({ [controlName]: null });
     }
   }
 
   clearFile(controlName: string) {
-    this.selectedFiles[controlName] = null;
     this.documentForm.patchValue({ [controlName]: null });
     const input = document.getElementById(controlName === 'cvFile' ? 'cv-upload' : 'national-id-upload') as HTMLInputElement;
     if (input) input.value = '';
@@ -171,11 +203,13 @@ export class RegistrationStepsComponent implements OnInit {
 
   nextStep() {
     const currentForm = this.getCurrentForm();
-  
+    if (currentForm.valid) {
       this.steps[this.currentStep - 1].completed = true;
       this.currentStep = Math.min(this.currentStep + 1, this.totalSteps);
       this.currentStepName.set(this.steps[this.currentStep - 1].title);
- 
+    } else {
+      this.markFormGroupTouched(currentForm);
+    }
   }
 
   prevStep() {
@@ -190,7 +224,7 @@ export class RegistrationStepsComponent implements OnInit {
     }
   }
 
-  markFormGroupTouched(formGroup: FormGroup) {
+  private markFormGroupTouched(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(key => {
       formGroup.get(key)?.markAsTouched();
     });
@@ -220,45 +254,36 @@ export class RegistrationStepsComponent implements OnInit {
     if (this.personalForm.valid && this.securityForm.valid && this.addressForm.valid && this.documentForm.valid) {
       this.isSubmitting = true;
       const formData = new FormData();
-
-      // Personal Form
       Object.keys(this.personalForm.value).forEach(key => {
         if (this.personalForm.value[key]) {
           formData.append(`personal.${key}`, this.personalForm.value[key]);
         }
       });
-
-      // Security Form
       Object.keys(this.securityForm.value).forEach(key => {
         if (this.securityForm.value[key]) {
           formData.append(`security.${key}`, this.securityForm.value[key]);
         }
       });
-
-      // Address Form
       Object.keys(this.addressForm.value).forEach(key => {
         if (this.addressForm.value[key]) {
           formData.append(`address.${key}`, this.addressForm.value[key]);
         }
       });
-
-      // Document Form
-      if (this.selectedFiles['cvFile']) {
-        formData.append('cvFile', this.selectedFiles['cvFile']);
+      const cvFile = this.documentForm.get('cvFile')?.value;
+      if (cvFile) {
+        formData.append('cvFile', cvFile);
       }
-      if (this.selectedFiles['nationalIdImageFile']) {
-        formData.append('nationalIdImageFile', this.selectedFiles['nationalIdImageFile']);
+      const nationalIdImageFile = this.documentForm.get('nationalIdImageFile')?.value;
+      if (nationalIdImageFile) {
+        formData.append('nationalIdImageFile', nationalIdImageFile);
       }
       if (this.documentForm.value.videoLink) {
         formData.append('videoLink', this.documentForm.value.videoLink);
       }
 
-      // Log form data for debugging
-      console.log('Final FormData:');
       for (let [key, value] of formData.entries()) {
         console.log(key, value);
       }
-
 
     } else {
       this.markFormGroupTouched(this.personalForm);

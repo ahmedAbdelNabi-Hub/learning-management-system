@@ -1,5 +1,5 @@
 <!-- Keep the same SVGs for background design -->
-<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-xl mx-auto">
         <img src="logo.png" class="w-52 mx-auto mb-2">
         <p class="font-semibold text-gray-800 text-center text-3xl mb-1">
@@ -18,7 +18,7 @@
                         <i class='bx bxs-right-arrow'></i>
                         السابق
                     </button>
-                   
+
 
                     <button *ngIf="currentStep < totalSteps" (click)="nextStep()"
                         class="flex items-center px-8 text-sm rounded- py-1 bg-blue-500 text-white  hover:bg-blue-600 transition-colors duration-200 font-medium ml-auto">
@@ -156,30 +156,26 @@
                                     formControlName="governorateId">
                                     <option value="" disabled selected>اختر المحافظة</option>
                                     <option *ngFor="let governorate of governorates()" [value]="governorate.id">
-                                        {{ governorate.nameAr }}
+                                        {{ governorate.nameAr }} ( {{ governorate.count }} )
                                     </option>
-                                </select>
-                                <label
-                                    class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
-                                    المحافظة
-                                </label>
+                                </select>               
                                 <app-form-error [form]="addressForm" controlName="governorateId"></app-form-error>
                             </div>
 
                             <div class="relative">
-                                <select
-                                    [ngClass]="isFieldInvalid(addressForm,'districtId') ? 'border-red-500' : 'border-[#9194ac]'"
-                                    class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 text-right"
-                                    formControlName="districtId" [disabled]="!addressForm.get('governorateId')?.value">
+                                <select [disabled]="cities().length === 0" [ngClass]="[
+                            isFieldInvalid(addressForm, 'districtId') 
+                            ? 'border-red-500' 
+                            : 'border-[#9194ac]',
+                            cities().length === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                            ]" class="peer w-full pt-6 pb-2 px-3 text-base border rounded-sm bg-white outline-none transition-all duration-200 text-right"
+                                    formControlName="districtId">
                                     <option value="" disabled selected>--اختر المدينة</option>
                                     <option *ngFor="let district of cities()" [value]="district.id">
                                         {{ district.nameAr }}
                                     </option>
                                 </select>
-                                <label
-                                    class="absolute right-3 top-4 text-gray-900 text-base transition-all duration-200 pointer-events-none peer-placeholder-shown:font-semibold peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-800 peer-focus:top-1 peer-focus:text-xs peer-focus:text-gray-700 peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-blue-600 peer-invalid:peer-[:not(:placeholder-shown)]:text-red-500">
-                                    المدينة
-                                </label>
+
                                 <app-form-error [form]="addressForm" controlName="districtId"></app-form-error>
                             </div>
                         </div>
